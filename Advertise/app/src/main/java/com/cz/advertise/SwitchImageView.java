@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -51,6 +50,7 @@ public class SwitchImageView extends View {
     private void init(){
         mPaint = new Paint();
         mPaint.setAlpha(0);
+        //取两层交集的内容，显示最下层绘制
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setAntiAlias(true);
@@ -62,14 +62,16 @@ public class SwitchImageView extends View {
     @Override
     protected void onDraw(Canvas behindCanvas) {
         super.onDraw(behindCanvas);
+
+        //绘制背景图片至背景画布
+        behindCanvas.drawBitmap(getBitmap(mBehindImage), null, rectF, null);
+        //初始时背景图片不可见，防止遮挡前景画布
+        behindCanvas.drawBitmap(frontBg, null, rectF, null);
+
         //绘制前景图片至前景画布
         frontCanvas.drawBitmap(getBitmap(mFrontImage), null, rectF, null);
         //绘制圆遮挡前景图片
         frontCanvas.drawCircle(width - offsetX, height - offsetY, radius, mPaint);
-
-        //绘制背景图片至背景画布
-        behindCanvas.drawBitmap(getBitmap(mBehindImage), null, rectF, null);
-        behindCanvas.drawBitmap(frontBg, null, rectF, null);
     }
 
     @Override
@@ -87,13 +89,17 @@ public class SwitchImageView extends View {
 
     private void getLocation() {
         int[] location = new int[2];
+        //获取view坐标
         this.getLocationOnScreen(location);
         int y = location[1];
-        int height = y + getHeight();
+        //view距离屏幕顶部的高度 + view自身高度
+        int heightTotal = y + getHeight();
 
-        if (y > 0 && getScreenHeight() >= height) {
-            radius = (float) ((getScreenHeight() - height) * 1.5);
-            frontCanvas.drawCircle(width - offsetX, this.height - offsetY, radius, mPaint);
+        //向上滑动, 放大圆的半径
+        //向下滑动, 缩小圆的半径
+        if (y > 0 && getScreenHeight() >= heightTotal) {
+            radius = (float) ((getScreenHeight() - heightTotal) * 1.5);
+            frontCanvas.drawCircle(width - offsetX, heightTotal - offsetY, radius, mPaint);
         } else {
             if (radius < width) {
                 radius = 0;
@@ -111,8 +117,7 @@ public class SwitchImageView extends View {
     }
 
     private Bitmap getBitmap(int resId){
-        Bitmap mBitmap = ((BitmapDrawable) getResources().getDrawable(resId)).getBitmap();
-        return mBitmap;
+        return ((BitmapDrawable) getResources().getDrawable(resId)).getBitmap();
     }
 
     public void setBehindImage(int resId){
