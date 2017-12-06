@@ -30,7 +30,7 @@ public class ZhiHuAdvertsView extends AppCompatImageView {
     private RectF mBitmapRectF;
     private Bitmap mBitmap;
 
-    private int mMinDy;
+    private int mHeight;
     private int mDy;
 
     public ZhiHuAdvertsView(Context context){
@@ -45,7 +45,7 @@ public class ZhiHuAdvertsView extends AppCompatImageView {
     protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
         super.onSizeChanged(width, height, oldWidth, oldHeight);
 
-        mMinDy = height;
+        mHeight = height;
         Drawable drawable = getDrawable();
 
         if (drawable == null) {
@@ -63,11 +63,11 @@ public class ZhiHuAdvertsView extends AppCompatImageView {
             BitmapDrawable bd = (BitmapDrawable) drawable;
             return bd.getBitmap();
         }
-        int w = drawable.getIntrinsicWidth();
-        int h = drawable.getIntrinsicHeight();
-        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, w, h);
+        drawable.setBounds(0, 0, width, height);
         drawable.draw(canvas);
         return bitmap;
     }
@@ -77,12 +77,13 @@ public class ZhiHuAdvertsView extends AppCompatImageView {
             return;
         }
 
-        mDy = dy - mMinDy;
+        mDy = dy - mHeight;
         if (mDy <= 0) {
             mDy = 0;
         }
-        if (mDy > mBitmapRectF.height() - mMinDy) {
-            mDy = (int) (mBitmapRectF.height() - mMinDy);
+
+        if (mDy > mBitmapRectF.height() - mHeight) {
+            mDy = (int) (mBitmapRectF.height() - mHeight);
         }
 
         invalidate();
