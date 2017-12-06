@@ -37,7 +37,7 @@ public class ZhiHuActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         List<String> mockDatas = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 14; i++) {
             mockDatas.add(i + "");
         }
 
@@ -53,6 +53,9 @@ public class ZhiHuActivity extends AppCompatActivity {
                     holder.setVisible(R.id.id_tv_title, false);
                     holder.setVisible(R.id.id_tv_desc, false);
                     holder.setVisible(R.id.id_iv_ad, true);
+
+                    ZhiHuAdvertsView adImageView = holder.getView(R.id.id_iv_ad);
+                    adImageView.bindView(mRecyclerView);
                 } else {
                     holder.setVisible(R.id.id_tv_title, true);
                     holder.setVisible(R.id.id_tv_desc, true);
@@ -60,23 +63,5 @@ public class ZhiHuActivity extends AppCompatActivity {
                 }
             }
         });
-
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                int fPos = mLinearLayoutManager.findFirstVisibleItemPosition();
-                int lPos = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
-                for (int i = fPos; i <= lPos; i++) {
-                    View view = mLinearLayoutManager.findViewByPosition(i);
-                    ZhiHuAdvertsView adImageView = view.findViewById(R.id.id_iv_ad);
-                    if (adImageView.getVisibility() == View.VISIBLE) {
-                        adImageView.setDy(mLinearLayoutManager.getHeight() - view.getTop());
-                    }
-                }
-            }
-        });
-
     }
 }

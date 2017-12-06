@@ -1,6 +1,7 @@
 package com.cz.advertise;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.RectF;
@@ -8,7 +9,14 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
 
 /**
  * @author caozheng
@@ -18,34 +26,39 @@ import android.util.AttributeSet;
  */
 
 public class ZhiHuAdvertsView extends AppCompatImageView {
-    public ZhiHuAdvertsView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
 
     private RectF mBitmapRectF;
     private Bitmap mBitmap;
 
     private int mMinDy;
+    private int mDy;
+
+    public ZhiHuAdvertsView(Context context){
+        super(context);
+    }
+
+    public ZhiHuAdvertsView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
+    protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
+        super.onSizeChanged(width, height, oldWidth, oldHeight);
 
-        mMinDy = h;
+        mMinDy = height;
         Drawable drawable = getDrawable();
 
         if (drawable == null) {
             return;
         }
 
-        mBitmap = drawableToBitamp(drawable);
-        mBitmapRectF = new RectF(0, 0,
-                w,
-                mBitmap.getHeight() * w / mBitmap.getWidth());
+        mBitmap = drawableToBitmap(drawable);
+        mBitmapRectF = new RectF(0, 0, width,
+                mBitmap.getHeight() * width / mBitmap.getWidth());
 
     }
 
-    private Bitmap drawableToBitamp(Drawable drawable) {
+    private Bitmap drawableToBitmap(Drawable drawable) {
         if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bd = (BitmapDrawable) drawable;
             return bd.getBitmap();
@@ -59,13 +72,11 @@ public class ZhiHuAdvertsView extends AppCompatImageView {
         return bitmap;
     }
 
-    private int mDy;
-
     public void setDy(int dy) {
-
         if (getDrawable() == null) {
             return;
         }
+
         mDy = dy - mMinDy;
         if (mDy <= 0) {
             mDy = 0;
@@ -73,7 +84,52 @@ public class ZhiHuAdvertsView extends AppCompatImageView {
         if (mDy > mBitmapRectF.height() - mMinDy) {
             mDy = (int) (mBitmapRectF.height() - mMinDy);
         }
+
         invalidate();
+    }
+
+    public void bindView(final ViewGroup parent){
+        if(parent instanceof RecyclerView){
+            ((RecyclerView) parent).addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+
+                    int[] location = getLocation();
+                    int y = location[1];
+                    //view距离屏幕顶部的高度 + view自身高度
+                    int heightTotal = y + getHeight();
+
+                    if(getVisibility() == View.VISIBLE){
+                        LinearLayoutManager mLinearLayoutManager = (LinearLayoutManager) ((RecyclerView) parent).getLayoutManager();
+
+                        //view完全可见时,开始滑动
+                        if (y > 0 && getScreenHeight() >= heightTotal) {
+                            setDy(mLinearLayoutManager.getHeight() - y);
+                        }
+                    }
+                }
+            });
+        }else if(parent instanceof ListView){
+
+        }else {
+            Log.i("SwitchImageView", "不支持的ViewGroup类型");
+        }
+    }
+
+    private int getScreenHeight(){
+        Resources resources = this.getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+
+        return dm.heightPixels;
+    }
+
+    private int[] getLocation(){
+        int[] location = new int[2];
+        //获取view坐标
+        this.getLocationOnScreen(location);
+
+        return location;
     }
 
     @Override
