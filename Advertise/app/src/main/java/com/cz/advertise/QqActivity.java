@@ -49,7 +49,7 @@ public class QqActivity extends AppCompatActivity {
         adapter.addItemViewDelegate(ITEM, new ItemViewDelegate<Integer>() {
             @Override
             public int getItemViewLayoutId() {
-                return R.layout.item_qq;
+                return R.layout.item_common;
             }
 
             @Override

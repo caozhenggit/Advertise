@@ -9,26 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:scaleType="matrix"
-        android:src="@mipmap/gril"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/id_tv_title"
-        android:layout_margin="12dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="岳阳楼记"
-        android:textSize="16dp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/id_tv_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/id_tv_title"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginBottom="12dp"
-        android:text="予观夫巴陵胜状，在洞庭一湖。衔远山，吞长江，浩浩汤汤，横无际涯；朝晖夕阴，气象万千。此则岳阳楼之大观也，前人之述备矣。然则北通巫峡，南极潇湘，迁客骚人，多会于此，览物之情，得无异乎？" />
+        android:src="@mipmap/gril"/>
 
 </RelativeLayout>
