@@ -45,7 +45,7 @@ public class ZhiHuActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
         mRecyclerView.setAdapter(new CommonAdapter<String>(ZhiHuActivity.this,
-                R.layout.item_ad_zhihu,
+                R.layout.item_zhihu_advertising,
                 mockDatas) {
             @Override
             protected void convert(ViewHolder holder, String o, int position) {
@@ -70,7 +70,7 @@ public class ZhiHuActivity extends AppCompatActivity {
                 int lPos = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
                 for (int i = fPos; i <= lPos; i++) {
                     View view = mLinearLayoutManager.findViewByPosition(i);
-                    AdImageViewVersion1 adImageView = view.findViewById(R.id.id_iv_ad);
+                    ZhiHuAdvertsView adImageView = view.findViewById(R.id.id_iv_ad);
                     if (adImageView.getVisibility() == View.VISIBLE) {
                         adImageView.setDy(mLinearLayoutManager.getHeight() - view.getTop());
                     }

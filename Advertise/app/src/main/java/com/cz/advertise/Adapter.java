@@ -16,9 +16,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         this.parent = parent;
         View view = null;
         if (viewType == ITEM) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_test, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_qq, parent, false);
         } else if (viewType == ADVERTISING) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_advertising, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_qq_advertising, parent, false);
         }
         return new ViewHolder(view);
     }
@@ -26,9 +26,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (getItemViewType(position) == ADVERTISING) {
-            ((SwitchImageView) holder.view).setBehindImage(R.mipmap.waller);
-            ((SwitchImageView) holder.view).setFrontImage(R.mipmap.waller_two);
-            ((SwitchImageView) holder.view).bindRecyclerView(parent);
+            ((QqAdvertsView) holder.view).setBehindImage(R.mipmap.waller);
+            ((QqAdvertsView) holder.view).setFrontImage(R.mipmap.waller_two);
+            ((QqAdvertsView) holder.view).bindView(parent);
         }
     }
 

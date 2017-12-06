@@ -12,8 +12,10 @@ import android.support.v7.widget.RecyclerView;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 /**
  * @author caozheng
@@ -22,7 +24,7 @@ import android.view.ViewGroup;
  * description: 仿QQ空间滑动切换图片广告
  */
 
-public class SwitchImageView extends View {
+public class QqAdvertsView extends View {
 
     private Paint mPaint;
     private Canvas frontCanvas;
@@ -37,12 +39,12 @@ public class SwitchImageView extends View {
     private int mBehindImage;
     private int mFrontImage;
 
-    public SwitchImageView(Context context) {
+    public QqAdvertsView(Context context) {
         super(context);
         init();
     }
 
-    public SwitchImageView(Context context, AttributeSet attrs){
+    public QqAdvertsView(Context context, AttributeSet attrs){
         super(context, attrs);
         init();
     }
@@ -128,17 +130,25 @@ public class SwitchImageView extends View {
         mFrontImage = resId;
     }
 
-    public void bindRecyclerView(ViewGroup parent){
-        if (!(parent instanceof RecyclerView)) {
-            throw new RuntimeException("必须是android.support.v7.widget.RecyclerView");
+    public void bindView(ViewGroup parent){
+        if(parent instanceof RecyclerView){
+            ((RecyclerView) parent).addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    getLocation();
+                }
+            });
+        }else if(parent instanceof ListView){
+            ((ListView) parent).setOnScrollChangeListener(new OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                    getLocation();
+                }
+            });
+        }else {
+            Log.i("SwitchImageView", "不支持的ViewGroup类型");
         }
-        ((RecyclerView) parent).addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                getLocation();
-            }
-        });
     }
 
 }

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:gravity="center">
 
-    <com.cz.advertise.AdImageViewVersion1
+    <com.cz.advertise.ZhiHuAdvertsView
         android:id="@+id/id_iv_ad"
         android:layout_width="match_parent"
         android:layout_height="250dp"

@@ -11,11 +11,14 @@ import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
 /**
- * Created by zhanghongyang01 on 17/11/23.
+ * @author caozheng
+ * Created time on 2017/12/5
+ *
+ * description: 仿知乎滑动切换图片广告
  */
 
-public class AdImageViewVersion1 extends AppCompatImageView {
-    public AdImageViewVersion1(Context context, @Nullable AttributeSet attrs) {
+public class ZhiHuAdvertsView extends AppCompatImageView {
+    public ZhiHuAdvertsView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -23,8 +26,6 @@ public class AdImageViewVersion1 extends AppCompatImageView {
     private Bitmap mBitmap;
 
     private int mMinDy;
-
-
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -43,7 +44,6 @@ public class AdImageViewVersion1 extends AppCompatImageView {
                 mBitmap.getHeight() * w / mBitmap.getWidth());
 
     }
-
 
     private Bitmap drawableToBitamp(Drawable drawable) {
         if (drawable instanceof BitmapDrawable) {
