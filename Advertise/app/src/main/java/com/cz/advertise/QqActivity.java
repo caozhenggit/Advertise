@@ -76,8 +76,8 @@ public class QqActivity extends AppCompatActivity {
             @Override
             public void convert(ViewHolder holder, Integer integer, int position) {
                 QqAdvertsView mSwitchImageView = holder.getView(R.id.image);
-                mSwitchImageView.setBehindImage(R.mipmap.waller);
-                mSwitchImageView.setFrontImage(R.mipmap.waller_two);
+                mSwitchImageView.setFrontImage(R.mipmap.adverts_1);
+                mSwitchImageView.setBehindImage(R.mipmap.adverts_2);
                 mSwitchImageView.bindView(mRecyclerView);
             }
         });
